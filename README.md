@@ -56,3 +56,7 @@ For a full explanation see [link to medium article].
     ```
 - To change the number of messages published modify the "num_messages_to_publish" environment variables in deploy/kubernetes/publish_messages_job.yaml
 - To change worker scaler parameters, modify deploy/kubernetes/helm/templates/worker_scaler.yaml
+- To uninstall
+    ```
+    $ ./bin/uninstall.sh
+    ```
