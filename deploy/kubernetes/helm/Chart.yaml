@@ -1,0 +1,9 @@
+apiVersion: v2
+name: k8s-auto-scaler
+description: A Kubernetes Helm chart to deploy the k8s-auto-scaler sample application
+
+type: application
+
+version: 0.1.0
+
+appVersion: 0.1.0

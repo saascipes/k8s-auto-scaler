@@ -1,0 +1,38 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: publish-messages-job
+  namespace: default
+  labels:
+    jobgroup: rmq_pub
+spec:
+  template:
+    metadata:
+      name: rmqpubjob
+      labels:
+        jobgroup: rmq_pub
+    spec:
+      containers:
+        - name: rmq-pub
+          image: rmq_pub:v0.0.1
+          command: ['python', 'src/rmq_pub.py']
+          env:
+            - name: rmq_user_name
+              value: autoScaler
+            - name: rmq_password
+              value: auto1234
+            - name: rmq_host
+              value: rabbitmq
+            - name: rmq_port
+              value: "5672"
+            - name: rmq_vhost
+              value: jobsToDo
+            - name: exch_name
+              value: test-exch
+            - name: queue_name
+              value: test-queue
+            - name: num_messages_to_publish
+              value: "200"
+          imagePullPolicy: IfNotPresent
+      restartPolicy: Never
+  ttlSecondsAfterFinished: 0

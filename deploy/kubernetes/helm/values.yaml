@@ -1,0 +1,4 @@
+image:
+  repository: worker_scaler
+  pullPolicy: IfNotPresent
+  tag: "v0.0.1"

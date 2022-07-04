@@ -1,0 +1,24 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: worker-config
+  namespace: {{ .Release.Namespace }}
+
+data:
+  environment: kubernetes
+  k8s_namespace: default
+  image_name: worker:v0.0.1
+  image_pull_policy: IfNotPresent
+  worker_type: worker
+  worker_group: worker-group-1
+  target_queue_size: "0"
+  force_empty_queue_interval: "60000"
+  scale_increment: "1"
+  check_trigger_interval: "10"
+  queue_name: test-queue
+  rmq_user_name: autoScaler
+  rmq_password: auto1234
+  rmq_host: rabbitmq
+  rmq_port: "5672"
+  rmq_vhost: jobsToDo

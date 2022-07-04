@@ -1,0 +1,19 @@
+kind: Pod
+apiVersion: v1
+metadata:
+  name: worker-scaler
+  namespace: {{ .Release.Namespace }}
+  labels:
+    worker_type: worker
+    worker_group: worker-group-1
+spec:
+  serviceAccountName: k8s-auto-scaler
+  containers:
+    - name: worker-scaler
+      image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+      imagePullPolicy: {{ .Values.image.pullPolicy }}
+      command: ['python', 'src/worker_scaler.py']
+      envFrom:
+        - configMapRef:
+            name: worker-config
+  restartPolicy: Never
