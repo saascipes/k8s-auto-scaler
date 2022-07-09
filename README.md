@@ -1,5 +1,5 @@
 # k8s-auto-scaler
-For a full explanation see [link to medium article].  
+An implementation of a pattern for efficiently scaling variable rate workloads with Kubernetes. For a full explanation of the architecture see "Scale your streaming data pipelines efficiently with kubernetes" [Part 1](https://medium.com/@rich_81505/scale-your-streaming-data-pipelines-efficiently-with-kubernetes-part-1-ab818be6ebd) and for a detailed description of the demo provided in this repo see [Part 2](https://medium.com/@rich_81505/scale-your-streaming-data-pipelines-efficiently-with-kubernetes-part-2-3e2bc8889eac).
 <br />
 
 ## Prerequisites
