@@ -16,4 +16,4 @@ spec:
       envFrom:
         - configMapRef:
             name: worker-config
-  restartPolicy: Never
+  restartPolicy: Always
