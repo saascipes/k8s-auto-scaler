@@ -8,6 +8,7 @@ import traceback
 from datetime import datetime
 from os import environ, _exit
 from pika.exchange_type import ExchangeType
+from socket import gethostname
 from threading import Thread, Event
 
 from rmq_consumer import AsyncConsumer
@@ -42,9 +43,14 @@ class Worker(object):
     """Auto reconnect rabbitmq consumer for a queue worker - messages are processed in parallel up to a max number of threads"""
 
     def on_message(self, delivery_tag, body, rmq_connector):
+        self._last_active_time = datetime.now()
         message = json.loads(body)
+        context = message | {"host": gethostname()}
         time.sleep(1)
-        print(f"Processed message: {message}", flush=True,)
+        print(
+            f"Processed message: {context}",
+            flush=True,
+        )
         rmq_connector.acknowledge_message(delivery_tag)
 
     def create_async_consumer(self):
@@ -140,7 +146,10 @@ class Worker(object):
                         if self._cnt_active_messages < 1:
                             self.gracefully_shutdown()
                         else:
-                            print(f"Unable to terminate - {self._cnt_active_messages} active messages", flush=True)
+                            print(
+                                f"Unable to terminate - {self._cnt_active_messages} active messages",
+                                flush=True,
+                            )
                     time.sleep(2)
                 except KeyboardInterrupt:
                     print("process interrupted - exiting", flush=True)
@@ -185,7 +194,7 @@ def main():
         "exch_name": "test-exch",
         "queue_name": "test-queue",
         "amqp_uri": f"amqp://{username}:{password}@{host}:{port}/{vhost}",
-        "max_idle_seconds": 60,
+        "max_idle_seconds": 20,
     }
 
     worker = Worker(**params)

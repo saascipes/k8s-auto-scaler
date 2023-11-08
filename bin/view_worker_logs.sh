@@ -2,8 +2,13 @@
 
 set -e
 
-WORKERS=( $(kubectl get pod | grep worker | grep -v scaler) )
+IFS=$'\n' WORKERS=($(kubectl get pod | grep worker | grep -v scaler | grep Running))
 
-printf "%s\n" "${WORKERS[0][0]}"
+for WORKER in "${WORKERS[@]}"
+do
+    IFS=$' ' WORKER_NAME=($WORKER)
+    printf "%s\n" "${WORKER_NAME}"
+    kubectl logs -f pod/${WORKER_NAME} &
+done
 
-kubectl logs -f pod/${WORKERS[0][0]}
+wait
